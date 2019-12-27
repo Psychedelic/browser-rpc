@@ -1,0 +1,12 @@
+{
+  "name": "ts-lib",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": ""
+  },
+  "devDependencies": {
+    "typescript": "^3.7.4"
+  }
+}
