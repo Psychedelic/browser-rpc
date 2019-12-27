@@ -22,7 +22,7 @@ export interface AppleProps {
   apple: AppleInterface;
 }
 
-export type AppleTestType {
+export type AppleTestType = {
   age: number;
   name: string;
 }
