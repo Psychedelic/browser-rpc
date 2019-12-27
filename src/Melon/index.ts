@@ -1,1 +1,1 @@
-export { default, MelonSize, MelonType, Melon } from './Melon';
+export { default, MelonSize, MelonType, MelonInterface } from './Melon';

@@ -9,14 +9,14 @@ export enum MelonSize {
   extraExtraLarge = 'XXL',
 }
 
-export interface Melon {
+export interface MelonInterface {
   age: number;
   origin: string;
   type: MelonType;
   size: MelonSize;
 };
 
-export default (melon: Melon): void => {
+export default (melon: MelonInterface): void => {
   const melonString = JSON.stringify(melon);
 
   console.log('this is your melon:', melonString);
