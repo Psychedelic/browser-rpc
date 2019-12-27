@@ -22,6 +22,11 @@ export interface AppleProps {
   apple: AppleInterface;
 }
 
+export type AppleTestType {
+  age: number;
+  name: string;
+}
+
 const Apple: React.FC<AppleProps> = (props) => {
   const { apple } = props;
 

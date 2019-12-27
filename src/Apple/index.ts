@@ -1,1 +1,2 @@
-export { default, AppleSize, AppleType, AppleInterface, AppleProps } from './Apple';
+export { default } from './Apple';
+export * from './Apple';
