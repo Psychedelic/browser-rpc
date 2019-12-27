@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "removeComments": true,
+    "declaration": true,
+    "outDir": "./core",
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*"]
+}

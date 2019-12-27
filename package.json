@@ -1,12 +1,21 @@
 {
-  "name": "ts-lib",
+  "name": "@gpuente-org-test/ts-lib",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "core/index.js",
+  "module": "core/esm/index.js",
+  "jsnext:main": "core/esm/index.js",
+  "types": "core/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "build": ""
+    "build": "npm run clean && npm-run-all --parallel build:**",
+    "build:cjs": "tsc --module commonjs --target es2015 --outDir ./core",
+    "build:esm": "tsc --module es2015 --target es5 --outDir ./core/esm",
+    "prepublishOnly": "npm run build",
+    "clean": "rimraf ./core"
   },
   "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.0",
     "typescript": "^3.7.4"
   }
 }
