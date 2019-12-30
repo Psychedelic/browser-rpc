@@ -12,12 +12,16 @@
     "build:cjs": "tsc --module commonjs --target es2015 --outDir ./core",
     "build:esm": "tsc --module es2015 --target es5 --outDir ./core/esm -d false",
     "prepublishOnly": "npm run build",
+    "storybook": "start-storybook -p 9001 -c .storybook",
     "clean": "rimraf ./core"
   },
   "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@storybook/react": "^5.2.8",
     "@types/prop-types": "^15.7.3",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
+    "babel-loader": "^8.0.6",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.0",
     "typescript": "^3.7.4"
