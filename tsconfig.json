@@ -2,6 +2,7 @@
   "compilerOptions": {
     "jsx": "react",
     "strict": true,
+    "rootDir": "src",
     "outDir": "./core",
     "declaration": true,
     "removeComments": true,
@@ -11,6 +12,8 @@
   },
   "include": ["src/**/*"],
   "exclude": [
-    "node_modules"
+    "core",
+    "node_modules",
+    "**/*.stories.*",
   ]
 }
