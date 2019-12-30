@@ -17,6 +17,19 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src/**",
     "lint:fix": "npm run lint -- --fix"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/<username>/<package-name>.git"
+  },
+  "keywords": [
+    "package",
+    "typescript"
+  ],
+  "author": "Guillermo Puente <guillermo@terminal.co>",
+  "bugs": {
+    "url": "https://github.com/<username>/<package-name>/issues"
+  },
+  "homepage": "https://github.com/<username>/<package-name>#readme",
   "devDependencies": {
     "@babel/core": "^7.7.7",
     "@material-ui/core": "^4.8.x",
