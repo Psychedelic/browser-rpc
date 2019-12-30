@@ -54,7 +54,7 @@ If you want to create a **non** `React` based library, you should remove some de
 ## peerDependencies
 If you need to use a package that should be provided by your host app, please adding it as a `peerDependencie` to avoid library duplications on `node_modules`.
 
-**Important Note:** `peerDependencies` are not installed by `npm install` or `yarn install`. So in order to install `peerDependencies` on dev enviroment you can add your required package as a `peerDependencies` and `devDependencies`. Otherwise you can use a package like `install-peers-cli`
+**Important Note:** `peerDependencies` are not installed by `npm install` or `yarn install`. So in order to install `peerDependencies` on dev enviroment you can add your required package as a `peerDependencies` and `devDependencies`. Otherwise, you can use a package like `install-peers-cli`
 
 [More Info Here](https://dev.to/yvonnickfrin/how-to-handle-peer-dependencies-when-developing-modules-18fa)
 
