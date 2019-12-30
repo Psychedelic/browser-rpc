@@ -33,7 +33,7 @@ Note that our `build` directory is called `core`, that way you can publish the p
 
 ## Download last base library updates
 
-As you changed the remote url for the library, **you will not be able to fetch the last updates using `git pull origin`**, instead you should use:
+As a result of changed the remote url for the library **you will not be able to fetch the last updates using `git pull origin`**, instead, you should use:
 ```
 git remote add base-lib https://github.com/Terminal-Systems/fe-base-pkg.git
 git checkout -b <some-temp-branch-name>/upgrade
