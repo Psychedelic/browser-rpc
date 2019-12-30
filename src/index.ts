@@ -1,5 +1,5 @@
-export { default as Apple } from './Apple';
-export * from './Apple';
+export { default as helloWorld } from './HelloWorld';
+export * from './HelloWorld';
 
-export { default as Melon } from './Melon';
-export * from './Melon';
+export { default as GradientButton } from './GradientButton';
+export * from './GradientButton';
