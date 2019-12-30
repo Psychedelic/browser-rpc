@@ -13,7 +13,9 @@
     "build:esm": "tsc --module es2015 --target es5 --outDir ./core/esm -d false",
     "prepublishOnly": "npm run build",
     "storybook": "start-storybook -p 9001 -c .storybook",
-    "clean": "rimraf ./core"
+    "clean": "rimraf ./core",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src/**",
+    "lint:fix": "npm run lint -- --fix"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -23,8 +25,16 @@
     "@types/prop-types": "^15.7.x",
     "@types/react": "^16.9.x",
     "@types/react-dom": "^16.9.x",
+    "@typescript-eslint/eslint-plugin": "^2.13.0",
+    "@typescript-eslint/parser": "^2.13.0",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "npm-run-all": "^4.1.5",
     "prop-types": "^15.7.2",
     "react": "^16.12.x",

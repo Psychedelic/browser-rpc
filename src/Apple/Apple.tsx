@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export enum AppleType {
   red = 'RED',
@@ -35,6 +36,22 @@ const Apple: React.FC<AppleProps> = (props) => {
       {JSON.stringify(apple)}
     </div>
   );
-}
+};
+
+Apple.propTypes = {
+  apple: PropTypes.shape({
+    origin: PropTypes.string.isRequired,
+    age: PropTypes.number.isRequired,
+    size: PropTypes.oneOf([
+      AppleSize.small,
+      AppleSize.medium,
+      AppleSize.large,
+    ]).isRequired,
+    type: PropTypes.oneOf([
+      AppleType.red,
+      AppleType.green,
+    ]).isRequired,
+  }).isRequired,
+};
 
 export default Apple;
