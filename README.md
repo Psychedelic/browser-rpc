@@ -12,6 +12,7 @@ Base Typescript boilerplate to build FE packages on top of it
 - `clean`: delete `core` folder
 - `lint`: run `eslint` on `src` folder
 - `lint:fix`: run eslint in fixing mode on `src` folder
+- `test`: run tests
 
 Note that our `build` directory is called `core`, that way you can publish the package and using it `package-name/core/SomeComponent` like [material-ui](https://material-ui.com/)
 
@@ -61,3 +62,22 @@ If you need to use a package that should be provided by your host app, please ad
 ## Workflow
 
 Our library workflow is pretty straightforward: use `develop` branch to add any new feature and `master` to publish on [npmjs.com](https://www.npmjs.com/) 
+
+## Testing
+This boilerplate is pre-configured with jest. You can run your tets with the command: `npm test`
+If you need to use some of the `enzyme` render methods, please consider use the `test-utils` provided by `@material-ui/core/test-utils`:
+- `createMount`
+- `createShallow`
+- `createRender` 
+
+[More Info Here](https://material-ui.com/guides/testing/)
+
+## Notes
+Before commit any change, husky is going to run eslint in fixing mode, run tests and try to build the project to avoid pushing commits that break something
+
+## Utils
+- [Typescript Guide](https://basarat.gitbooks.io/typescript/)
+- [Typescript docs](https://www.typescriptlang.org/docs/home.html)
+- [Enzyme docs](https://airbnb.io/enzyme/)
+- [Jest docs](https://jestjs.io/docs/en/getting-started)
+- [NPM docs](https://docs.npmjs.com/)
