@@ -64,8 +64,7 @@ If you need to use a package that should be provided by your host app, please ad
 Our library workflow is pretty straightforward: use `develop` branch to add any new feature and `master` to publish on [npmjs.com](https://www.npmjs.com/) 
 
 ## Testing
-This boilerplate is pre-configured with jest. You can run your tets with the command: `npm test`
-If you need to use some of the `enzyme` render methods, please consider use the `test-utils` provided by `@material-ui/core/test-utils`:
+This boilerplate is pre-configured with jest. You can run your tets with the command: `npm test`. If you need to use some of the `enzyme` render methods, please consider use the `test-utils` provided by `@material-ui/core/test-utils`:
 - `createMount`
 - `createShallow`
 - `createRender` 
