@@ -36,10 +36,10 @@ Note that our `build` directory is called `core`, that way you can publish the p
 
 As a result of changed the remote url for the library **you will not be able to fetch the last updates using `git pull origin`**, instead, you should use:
 ```
-git remote add base-lib https://github.com/Terminal-Systems/fe-base-pkg.git
+git remote add fe-base-pkg https://github.com/Terminal-Systems/fe-base-pkg.git
 git checkout -b <some-temp-branch-name>/upgrade
-git fetch base-lib
-git merge base-lib/master
+git fetch fe-base-pkg
+git merge fe-base-pkg/master
 ```
 
 ## Build a non React based library
