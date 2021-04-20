@@ -2,7 +2,7 @@
 
 exports[`GradientButton should match stapshot 1`] = `
 <button
-  className="MuiButtonBase-root MuiButton-root MuiButton-text makeStyles-root-1 makeStyles-root-46"
+  className="MuiButtonBase-root MuiButton-root MuiButton-text makeStyles-root-1 makeStyles-root-4"
   disabled={false}
   inclination="45deg"
   onBlur={[Function]}

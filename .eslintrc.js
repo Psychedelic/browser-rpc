@@ -27,22 +27,25 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
-    'import/no-extraneous-dependencies': "off",
-    'import/no-unresolved': ['error', { ignore: Object.keys(pkg.peerDependencies) }],
+    'no-use-before-define': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    'import/no-unresolved': ['error', {
+      ignore: Object.keys(pkg.peerDependencies),
+    }],
     'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
     'max-lines': ['error', { max: 300, skipComments: true }],
     'react/prop-types': [2, { ignore: ['children'] }],
-    'max-len': ["error", { "code": 80 }],
-    'react/jsx-wrap-multilines': ["error", {
-      "declaration": "parens-new-line",
-      "assignment": "parens-new-line",
-      "return": "parens-new-line",
-      "arrow": "parens-new-line",
-      "condition": "parens-new-line",
-      "logical": "ignore",
-      "prop": "ignore"
+    'max-len': ['error', { code: 80 }],
+    'react/jsx-wrap-multilines': ['error', {
+      declaration: 'parens-new-line',
+      assignment: 'parens-new-line',
+      return: 'parens-new-line',
+      arrow: 'parens-new-line',
+      condition: 'parens-new-line',
+      logical: 'ignore',
+      prop: 'ignore',
     }],
-    'react/jsx-props-no-spreading': "off",
+    'react/jsx-props-no-spreading': 'off',
     'import/extensions': ['error', 'ignorePackages', {
       js: 'never',
       jsx: 'never',
@@ -64,8 +67,8 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       rules: {
-        '@typescript-eslint/no-unused-vars': [2, { args: 'none' }]
-      }
-    }
+        '@typescript-eslint/no-unused-vars': [2, { args: 'none' }],
+      },
+    },
   ],
 };
