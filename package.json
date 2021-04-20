@@ -12,11 +12,12 @@
     "build:cjs": "tsc --module commonjs --target es2015 --outDir ./core",
     "build:esm": "tsc --module es2015 --target es5 --outDir ./core/esm -d false",
     "prepublishOnly": "npm run build",
-    "storybook": "start-storybook -p 9001 -c .storybook",
     "clean": "rimraf ./core",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src/**",
     "lint:fix": "npm run lint -- --fix",
-    "test": "jest"
+    "test": "jest",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -34,8 +35,10 @@
   "devDependencies": {
     "@babel/core": "^7.13.16",
     "@material-ui/core": "^4.11.3",
-    "@storybook/addon-knobs": "^5.2.8",
-    "@storybook/react": "^5.2.8",
+    "@storybook/addon-actions": "^6.2.8",
+    "@storybook/addon-essentials": "^6.2.8",
+    "@storybook/addon-links": "^6.2.8",
+    "@storybook/react": "^6.2.8",
     "@types/jest": "^26.0.22",
     "@types/prop-types": "^15.7.3",
     "@types/react": "^17.0.3",
@@ -43,7 +46,6 @@
     "@types/react-test-renderer": "^17.0.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
-    "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.2.2",
     "eslint": "^7.24.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -64,9 +66,10 @@
     "typescript": "^4.2.4"
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.8.x",
+    "@material-ui/core": "^4.11.x",
     "prop-types": "^15.7.x",
     "react": "^17.0.x",
     "react-dom": "^17.0.x"
-  }
+  },
+  "dependencies": {}
 }
