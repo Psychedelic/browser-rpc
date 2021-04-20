@@ -1,48 +1,38 @@
 {
-  "name": "fe-base-pkg",
+  "name": "browser-rpc",
   "version": "1.0.0",
-  "main": "core/index.js",
-  "module": "core/esm/index.js",
-  "jsnext:main": "core/esm/index.js",
-  "types": "core/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "jsnext:main": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "sideEffects": false,
   "scripts": {
     "build": "npm run clean && npm-run-all --parallel build:** && node ./scripts/add-package.js",
-    "build:cjs": "tsc --module commonjs --target es2015 --outDir ./core",
-    "build:esm": "tsc --module es2015 --target es5 --outDir ./core/esm -d false",
+    "build:cjs": "tsc --module commonjs --target es2015 --outDir ./dist",
+    "build:esm": "tsc --module es2015 --target es5 --outDir ./dist/esm -d false",
     "prepublishOnly": "npm run build",
-    "clean": "rimraf ./core",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src/**",
+    "clean": "rimraf ./dist",
+    "lint": "eslint --ext .js,.ts ./src/**",
     "lint:fix": "npm run lint -- --fix",
-    "test": "jest",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/<username>/<package-name>.git"
+    "url": "git+https://github.com/FleekHQ/browser-rpc.git"
   },
   "keywords": [
     "package",
     "typescript"
   ],
-  "author": "Guillermo Puente <guillermo@terminal.co>",
+  "author": "Guillermo Puente <guillermo@fleek.co>",
   "bugs": {
-    "url": "https://github.com/<username>/<package-name>/issues"
+    "url": "https://github.com/FleekHQ/browser-rpc/issues"
   },
-  "homepage": "https://github.com/<username>/<package-name>#readme",
+  "homepage": "https://github.com/FleekHQ/browser-rpc#readme",
   "devDependencies": {
     "@babel/core": "^7.13.16",
-    "@material-ui/core": "^4.11.3",
-    "@storybook/addon-actions": "^6.2.8",
-    "@storybook/addon-essentials": "^6.2.8",
-    "@storybook/addon-links": "^6.2.8",
-    "@storybook/react": "^6.2.8",
     "@types/jest": "^26.0.22",
-    "@types/prop-types": "^15.7.3",
-    "@types/react": "^17.0.3",
-    "@types/react-dom": "^17.0.3",
     "@types/react-test-renderer": "^17.0.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
@@ -50,26 +40,15 @@
     "eslint": "^7.24.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.23.2",
-    "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^3.1.0",
     "jest": "^26.6.3",
     "lint-staged": "^9.5.0",
     "npm-run-all": "^4.1.5",
-    "prop-types": "^15.7.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "react-test-renderer": "^17.0.2",
     "rimraf": "^3.0.0",
     "ts-jest": "^26.5.5",
     "typescript": "^4.2.4"
   },
-  "peerDependencies": {
-    "@material-ui/core": "^4.11.x",
-    "prop-types": "^15.7.x",
-    "react": "^17.0.x",
-    "react-dom": "^17.0.x"
-  },
+  "peerDependencies": {},
   "dependencies": {}
 }

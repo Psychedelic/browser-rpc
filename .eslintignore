@@ -1,4 +1,4 @@
 node_modules
 .storybook
-core
+dist
 scripts

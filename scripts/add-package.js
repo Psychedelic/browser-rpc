@@ -13,7 +13,7 @@ const filterDirs = (dir) => {
   return dir.isDirectory() && keepDir;
 }
 
-const directories = readdirSync('./core', { withFileTypes: true })
+const directories = readdirSync('./dist', { withFileTypes: true })
   .filter(filterDirs)
   .map(dir => dir.name);
 
@@ -23,7 +23,7 @@ directories.forEach((dirname) => {
     module: `../esm/${dirname}/index.js`,
   }, null, 2);
 
-  writeFileSync(`./core/${dirname}/package.json`, data);
+  writeFileSync(`./dist/${dirname}/package.json`, data);
 });
 
 console.log('Task finished');

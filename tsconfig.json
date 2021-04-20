@@ -3,7 +3,7 @@
     "jsx": "react",
     "strict": true,
     "rootDir": "src",
-    "outDir": "./core",
+    "outDir": "./dist",
     "declaration": true,
     "removeComments": true,
     "esModuleInterop": true,
@@ -13,7 +13,7 @@
   },
   "include": ["src/**/*"],
   "exclude": [
-    "core",
+    "dist",
     "scripts",
     ".storybook",
     "**/*.spec.*",
