@@ -1,3 +1,4 @@
-export { default as helloWorld } from './HelloWorld';
-export * from './HelloWorld';
-
+export { default as BrowserRPC } from './BrowserRPC';
+export { default as RPC } from './RPC';
+export { default } from './BrowserRPC';
+export * from './types';
