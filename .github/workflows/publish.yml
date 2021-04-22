@@ -19,6 +19,6 @@ jobs:
     - name: yarn install
       run: yarn install
     - name: npm publish
-      run: npm publish
+      run: npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{secrets.TERMINAL_NPM_TOKEN}}
