@@ -1,5 +1,5 @@
 {
-  "name": "browser-rpc",
+  "name": "@fleekhq/browser-rpc",
   "version": "1.0.0",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
