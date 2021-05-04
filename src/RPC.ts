@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import validateMessageObject from './schema';
+import { validateMessageSchema } from './helpers';
 import { JSON_RPC_VERSION, JSON_RPC_ERROR_CODES } from './constants';
 import {
   CallID,
@@ -13,14 +13,13 @@ import {
   ResolverObject,
   CallBackHandler,
   CallConfigObject,
-  ValidationMessageObject,
 } from './types';
 
 export default abstract class RPC {
-  private name: string;
-  private target: string;
+  protected name: string;
+  protected target: string;
   private timeout: number = 5000;
-  private handlers = new Map<string, Handler>();
+  protected handlers = new Map<string, Handler>();
   private calls = new Map<CallID, ResolverObject>();
 
   constructor(config: RpcConfig) {
@@ -94,7 +93,7 @@ export default abstract class RPC {
     });
   }
 
-  async call(handler: string, args: any[], config?: CallConfigObject): Promise<any> {
+  async call(handler: string, args?: any[] | null, config?: CallConfigObject): Promise<any> {
     let timeout = this.timeout;
 
     if (config && typeof config.timeout === 'number') {
@@ -105,34 +104,12 @@ export default abstract class RPC {
       handler,
       config?.target || this.target,
       timeout,
-      args,
+      args || [],
     );
   }
 
-  private validateMessage(message: any): ValidationMessageObject {
-    const result = validateMessageObject(message);
-
-    if (Array.isArray(result)) return { isValid: false, type: null };
-
-    let type: ValidationMessageObject['type'] = null;
-
-    if (message.data.data.method && message.data.data.params) {
-      type = 'req';
-    } else if (
-      message.data.data.hasOwnProperty('result')
-      || typeof message.data.data.hasOwnProperty('error')
-    ) {
-      type = 'res';
-    }
-
-    return {
-      type,
-      isValid: (type === 'req' || type === 'res'),
-    };
-  }
-
   protected onMessage(eventMessage: any): void {
-    const { type, isValid } = this.validateMessage(eventMessage);
+    const { type, isValid } = validateMessageSchema(eventMessage);
     if (!isValid) return;
 
     const message = eventMessage as Message;
@@ -150,7 +127,7 @@ export default abstract class RPC {
     }
   }
 
-  private onRequestMessage(message: ReqMessage): void {
+  protected onRequestMessage(message: ReqMessage): void {
     const resMessage: ResMessage = {
       target: this.target,
       data: {
@@ -186,7 +163,10 @@ export default abstract class RPC {
         this.sendMessage(resMessage);
       };
 
-      handler(callback, ...message.data.data.params);
+      handler({
+        callback,
+        message,
+      }, ...message.data.data.params);
     } catch (error) {
       if (resMessage.data.data.hasOwnProperty('error')) return;
       if (resMessage.data.data.hasOwnProperty('result')) return;

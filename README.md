@@ -70,10 +70,11 @@ Handlers are just functions that receive as first argument a callback and the re
 your handler function has to call the callback once the response is procesed or when an error ocurred. the callback receives as first argumeent an ErrorRes object (please refer to the ErrorRes Type section) type and as second the response (any).
 To expose a new handler you have to call the "exposeHandler" method on your rpc instance and pass a string name (this is the identifier for your handler) and your handler function. You can add as many handlers as you want.
 */
-server.exposeHandler('sum', (cb, val1, val2) => {
+server.exposeHandler('sum', ({ callback, message }, val1, val2) => {
+  console.log(message); // Full message
   const result = val1 + val2;
 
-  cb(null, result);
+  callback(null, result);
 });
 
 
@@ -133,3 +134,227 @@ export type ErrorRes = {
 This error type represents a JSON RPC error object. Please refer to the JSON RPC documentation to get information about error codes, message and data:
 
 https://www.jsonrpc.org/specification#error_object
+
+
+# ProxyRPC
+
+This class is meant to be used on browser extensions content script. It allow proxy all the calls that arn't handled by the instance to the background script controller (see BackgroundController class). Same way, all the responses received from the BackgroundScript controller are redirected to the requester. (This class implements window.postMessage for the communication between webpages and content script, and browser.runtime.port for the cummunication between the content script and the background script).
+
+
+```js
+import { ProxyRPC } from '@fleekhq/browser-rpc';
+
+// Create a new ProxyRPC instance
+// name property is injected as part of the responses messages to identify who processed the response
+// name property is also usid as the PORT name for the communication with the background script
+// target property specifies who can call methods on this new instance and receive the responses. If a different target try to call methods on this instance, the calls are ignored.
+const server = new ProxyRPC(window, {
+  name: 'rpc-server',
+  target: 'browser-client',
+});
+
+
+server.exposeHandler('sum', ({ callback, message }, val1, val2) => {
+  console.log(message); // Full message
+  const result = val1 + val2;
+
+  callback(null, result);
+});
+
+server.start();
+```
+
+now if you try to call the method `sum` from your client, you'll receive the response from the ProxyRPC instance, but if you try to call a method not defined into the Proxy, the call is going to be redirected to the background script using `Port` communication in order to be processed. If the method also doesn't exists in the background script controller, the call is rejected with an error.
+
+
+# BackgroundController
+
+This class implements Port communication between the content script and other resources with access to the Port API. Similar to the BorwserRPC and ProxyRPC, you can expose handlers to process the requests.
+
+
+```js
+import { BackgroundController } from '@fleekhq/browser-rpc';
+
+const backgroundController = new BackgroundController({
+  name: 'bg-script',
+  trustedSources: [
+    'rpc-server',
+    'another-port-source',
+  ],
+});
+
+backgroundController.exposeController('hello', (opts, name) => {
+  const { message, sender, callback } = opts;
+
+  console.log(message); // Full message
+  console.log(sender); // Sender information: port id, port name, port
+
+
+  callback(null, `hello ${name}!!!`);
+});
+
+backgroundController.exposeController('remoteCall', (opts, myNumber, callId, portId) => {
+  const { callback } = opts;
+
+  callback(null, myNumber);
+  callback(null, myNumber, [{ portId, callId }]);
+});
+
+backgroundController.start();
+```
+
+
+### BackgroundController.exposeHandler(name: string, handler: ControllerHandler): void
+
+Add a new handler to the instance
+
+#### handler: (opts, ...args) => void
+- opts (object):
+  - sender: Sender information object
+    - id: port id assigned by the instance
+    - name: port name
+    - port: port
+  - ports: Map with all the ports handled by the instance:  Map<id: number, port>;
+  - message: The full message
+  - callback: callback used to send a response back to the sender port or to another port
+    - err: ErrorRes type if you want to send an error or null if is not required
+    - res: any, the respose that you want to send back to the sender
+    - targetPorts: optional, this is an array of objects with a portId and a callId (message call id). If you want to send a response to a different port, you have to pass this information, otherwise the callback is going to respond directly to the sender
+      - portId: number, the target port id
+      - callId: number | string, the call id
+
+```typescript
+  type HandlerProps = {
+    sender: {
+      id: number,
+      name: string,
+      port: chrome.runtime.Port,
+    },
+    ports: Map<number, chrome.runtime.Port>,
+    message: Message,
+    callback: (
+      err: ErrorRes | null,
+      res: any,
+      targetPorts?: {
+        portId: number,
+        callId: CallID,
+      }[],
+    ) => void,
+  };
+
+  type ControllerHandler = (
+    props: HandlerProps,
+    ...args: any[]
+  ) => void;
+```
+
+
+# PortRPC
+
+Similar to BrowserRPC, this one is used to send requests to the BackgroundController using Port communication
+
+```js
+import { PortRPC } from '@fleekhq/browser-rpc';
+
+const client = new PortRPC({
+  name: 'browser-port-rpc',
+  target: 'bg-script',
+  timeout: 10000,
+});
+
+client.start();
+
+client
+  .call('sum', [1, 2])
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+# Full Example
+
+Here is a full implementation of BrowserRPC, ProxyRPC, PortRPC and BackgroundController
+
+webpage
+```js
+  import { BrowserRPC } from '@fleekhq/browser-rpc';
+
+  const client = new BrowserRPC(window, {
+    name: 'browser-client',
+    target: 'rpc-server',
+    timeout: 10000,
+  });
+
+  client.start();
+
+  // This call is handled directly by ProxyRPC since the handler is definded
+  client
+    .call('sum', [1, 2])
+    .then((result) => {
+      console.log(result); // result: 3. response processed by ProxyRPC handler
+    });
+
+
+  // In this case the method isn't defined on ProxyRPC so the call is redirected to the Background controller
+  client
+    .call('hello', ['Jhon'])
+    .then((result) => {
+      console.log(result); // result: "hello John!!!". response processed by BackgroundController handler
+    });
+```
+
+content script
+```js
+  import { ProxyRPC } from '@fleekhq/browser-rpc';
+  const server = new ProxyRPC(window, {
+    name: 'rpc-server',
+    target: 'browser-client',
+  });
+
+  server.exposeHandler('sum', ({ callback, message }, val1, val2) => {
+    console.log(message); // Full message
+    const result = val1 + val2;
+
+    callback(null, result);
+  });
+
+  server.start();
+```
+
+
+background script
+```js
+  import { BackgroundController } from '@fleekhq/browser-rpc';
+
+  const backgroundController = new BackgroundController({
+    name: 'bg-script',
+    trustedSources: [
+      'rpc-server',
+      'another-port-source',
+    ],
+  });
+
+  backgroundController.exposeController('hello', (opts, name) => {
+    const { message, sender, callback } = opts;
+
+    console.log(message); // Full message
+    console.log(sender); // Sender information: port id, port name, port
+
+
+    callback(null, `hello ${name}!!!`);
+  });
+
+  backgroundController.exposeController('remoteCall', (opts, myNumber, callId, portId) => {
+    const { callback } = opts;
+
+    callback(null, myNumber);
+
+    // here you can use another callID and portID to send a response to a different port if you want
+    callback(null, myNumber, [{ portId, callId }]); 
+  });
+
+  backgroundController.start();
+```
