@@ -1,6 +1,6 @@
 {
   "name": "@fleekhq/browser-rpc",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
   "jsnext:main": "dist/esm/index.js",
@@ -32,6 +32,7 @@
   "homepage": "https://github.com/FleekHQ/browser-rpc#readme",
   "devDependencies": {
     "@babel/core": "^7.13.16",
+    "@types/chrome": "^0.0.135",
     "@types/jest": "^26.0.22",
     "@types/react-test-renderer": "^17.0.1",
     "@types/uuid": "^8.3.0",
@@ -52,7 +53,8 @@
   },
   "peerDependencies": {},
   "dependencies": {
-    "fastest-validator": "^1.10.1",
+    "extensionizer": "^1.0.1",
+    "joi": "^17.4.0",
     "uuid": "^8.3.2"
   }
 }

@@ -1,27 +1,22 @@
-import Validator, { ValidationSchema } from 'fastest-validator';
+import Joi from 'joi';
 
-const validator = new Validator();
+const schema = Joi.object({
+  target: Joi.string().required(),
+  data: Joi.object({
+    name: Joi.string().required(),
+    data: Joi.object({
+      id: Joi.alternatives().try(Joi.number(), Joi.string()).required(),
+      jsonrpc: Joi.string().valid('2.0').required(),
+      result: Joi.any(),
+      method: Joi.string(),
+      params: Joi.array().items(Joi.any()),
+      error: Joi.object({
+        code: Joi.number().required(),
+        message: Joi.string().required(),
+        data: Joi.any(),
+      }),
+    }).required(),
+  }).required(),
+});
 
-const messageSchema: ValidationSchema = {
-  target: 'string',
-  data: {
-    type: 'object',
-    props: {
-      name: 'string',
-      data: {
-        type: 'object',
-        props: {
-          id: ['string', 'number'],
-          jsonrpc: { type: 'equal', value: '2.0' },
-          result: { type: 'any', optional: true },
-          error: { type: 'object', optional: true },
-          method: { type: 'string', optional: true },
-          params: { type: 'array', optional: true, items: 'any' }
-        },
-      },
-    },
-  },
-};
-
-const validateMessageObject = validator.compile(messageSchema);
-export default validateMessageObject;
+export default schema;

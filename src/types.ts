@@ -47,7 +47,13 @@ export type ResolverObject = {
 };
 
 export type CallBackHandler = (err: null | ErrorRes, res?: null | any) => void;
-export type Handler = (cb: CallBackHandler, ...args: any[]) => any;
+
+export type HandlerProps = {
+  callback: CallBackHandler,
+  message: ReqMessage,
+};
+
+export type Handler = (props: HandlerProps, ...args: any[]) => any;
 
 export type CallConfigObject = {
   timeout: number;
