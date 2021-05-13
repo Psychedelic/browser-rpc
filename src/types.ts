@@ -56,8 +56,8 @@ export type HandlerProps = {
 export type Handler = (props: HandlerProps, ...args: any[]) => any;
 
 export type CallConfigObject = {
-  timeout: number;
-  target: string;
+  timeout?: number;
+  target?: string;
 };
 
 export type ValidationMessageObject = {
