@@ -52,7 +52,7 @@ type BackgroundControllerConfig = {
 export default class BackgroundController {
   private name: string;
   private trustedSources: string[] = [];
-  public ports = new Map<string, chrome.runtime.Port>();
+  private ports = new Map<string, chrome.runtime.Port>();
   private controllers = new Map<string, ControllerHandler>();
 
   constructor(config: BackgroundControllerConfig) {
