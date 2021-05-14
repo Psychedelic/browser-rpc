@@ -11,24 +11,26 @@ import {
 } from './types';
 
 type EnhancedResMessage = ResMessage & {
-  targetPorts?: number | number[],
+  targetPorts?: string | string[],
 };
 
 type Message = ReqMessage | EnhancedResMessage;
 
 type HandlerProps = {
   sender: {
-    id: number,
+    id: string,
+    tabId: number,
+    frameId: number,
     name: string,
     port: chrome.runtime.Port,
   },
-  ports: Map<number, chrome.runtime.Port>,
+  ports: Map<string, chrome.runtime.Port>,
   message: Message,
   callback: (
     err: ErrorRes | null,
     res: any,
     targetPorts?: {
-      portId: number,
+      portId: string,
       callId: CallID,
     }[],
   ) => void,
@@ -50,7 +52,7 @@ type BackgroundControllerConfig = {
 export default class BackgroundController {
   private name: string;
   private trustedSources: string[] = [];
-  private ports = new Map<number, chrome.runtime.Port>();
+  public ports = new Map<string, chrome.runtime.Port>();
   private controllers = new Map<string, ControllerHandler>();
 
   constructor(config: BackgroundControllerConfig) {
@@ -112,14 +114,21 @@ export default class BackgroundController {
       return;
     }
 
+    const tabId = port.sender?.tab?.id || 0;
+    const frameId = port.sender?.frameId || 0;
+
+    const portId = `${tabId}:${frameId}`;
+
     controller({
       message,
       callback: this.sendPortResponse.bind(this, port, message.data.data.id),
       ports: this.ports,
       sender: {
-        id:  port.sender?.tab?.id || 0,
-        name: port.name,
         port,
+        tabId,
+        frameId,
+        id:  portId,
+        name: port.name,
       },
     }, ...message.data.data.params);
   }
@@ -130,7 +139,7 @@ export default class BackgroundController {
     err: ErrorRes | null,
     res: any,
     targetPorts?: {
-      portId: number,
+      portId: string,
       callId: CallID,
     }[],
   ): void {
@@ -172,7 +181,7 @@ export default class BackgroundController {
       ...rpcResponse
     } = message;
 
-    let portsIds: number[] = [];
+    let portsIds: string[] = [];
 
     if (typeof targetPorts === 'string') {
       portsIds = [targetPorts];
@@ -217,39 +226,41 @@ export default class BackgroundController {
 
     this.updatePorts();
     const tabId = port.sender?.tab?.id;
+    const frameId = port.sender?.frameId || 0;
 
     if (tabId === undefined || tabId === null) {
       console.error('Port does not contain a valid tabId');
       return;
     };
 
-    this.ports.set(tabId, port);
+    const portId = `${tabId}:${frameId}`;
+
+    this.ports.set(portId, port);
 
     port.onMessage.addListener(this.onPortMessage);
   }
 
   private onTabRemoved(tabId: number): void {
-    const port = this.ports.get(tabId);
+    const regexp = new RegExp(`^${tabId}:`, 'i');
 
-    if (port) {
-      port.disconnect();
-      this.ports.delete(tabId);
-    }
+    this.ports.forEach((port, key) => {
+      if (regexp.test(key)) {
+        port.disconnect();
+        this.ports.delete(key);
+      }
+    });
   }
 
   private updatePorts(): void {
     extension.tabs.query({}, (tabs: chrome.tabs.Tab[]) => {
       const tabsIds = tabs.map((tab) => tab.id);
-      const portsIds: number[] = [];
 
-      this.ports.forEach((_, id) => portsIds.push(id));
+      this.ports.forEach((port, key) => {
+        const tabId = parseInt(key.split(':')[0], 10);
 
-      portsIds.forEach((id) => {
-        if (!tabsIds.includes(id)) {
-          const port = this.ports.get(id);
-
-          port?.disconnect();
-          this.ports.delete(id);
+        if (!tabsIds.includes(tabId)) {
+          port.disconnect();
+          this.ports.delete(key);
         }
       });
     });
