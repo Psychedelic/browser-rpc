@@ -64,7 +64,7 @@ export default abstract class RPC {
     return new Promise((resolve, reject) => {
       const resolver: Resolver = (err, res) => {
         if (err) {
-          reject(err);
+          reject(new Error(err.message));
           return;
         }
 
