@@ -64,8 +64,6 @@ export default abstract class RPC {
     return new Promise((resolve, reject) => {
       const resolver: Resolver = (err, res) => {
         if (err) {
-          console.error(err);
-
           reject(new Error(err.message));
           return;
         }
@@ -81,7 +79,7 @@ export default abstract class RPC {
             this.calls.delete(id);
 
             resolver({
-              code: JSON_RPC_ERROR_CODES.INTERNAL_ERROR,
+              code: JSON_RPC_ERROR_CODES.TIMEOUT_ERROR,
               message: 'Request Timeout',
             });
           }
