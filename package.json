@@ -1,6 +1,6 @@
 {
-  "name": "@fleekhq/browser-rpc",
-  "version": "2.0.3",
+  "name": "@psychedelic/browser-rpc",
+  "version": "2.1.0",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
   "jsnext:main": "dist/esm/index.js",
@@ -19,17 +19,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FleekHQ/browser-rpc.git"
+    "url": "git+https://github.com/Psychedelic/browser-rpc.git"
   },
   "keywords": [
     "package",
     "typescript"
   ],
-  "author": "Guillermo Puente <guillermo@fleek.co>",
+  "author": "Psychedelic",
   "bugs": {
-    "url": "https://github.com/FleekHQ/browser-rpc/issues"
+    "url": "https://github.com/Psychedelic/browser-rpc/issues"
   },
-  "homepage": "https://github.com/FleekHQ/browser-rpc#readme",
+  "homepage": "https://github.com/Psychedelic/browser-rpc#readme",
   "devDependencies": {
     "@babel/core": "^7.13.16",
     "@types/chrome": "^0.0.135",
