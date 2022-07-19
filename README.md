@@ -6,12 +6,12 @@ This library allows you exchange messages beetween BrowserRPC instances using wi
 
 Using npm:
 ```bash
-$ npm install @fleekhq/browser-rpc
+$ npm install @psychedelic/browser-rpc
 ```
 
 Using yarn
 ```bash
-$ yarn add @fleekhq/browser-rpc
+$ yarn add @psychedelic/browser-rpc
 ```
 
 
@@ -23,7 +23,7 @@ RPC requires that you setup a client (who calls remote procedures and wait for r
 Let's say that your client is going to be placed in your webpage and need to call a remote procedure method called `sum` that receives 2 arguments (2 number values to sum).
 
 ```js
-import { BrowserRPC } from '@fleekhq/browser-rpc';
+import { BrowserRPC } from '@psychedelic/browser-rpc';
 
 // Create a new rpc instance
 // the name is the identidfier of this rpc instance. Name is injected as part of the call message to identify who is trying to call the method requested.
@@ -54,7 +54,7 @@ client.stop();
 
 We've already setup the client, now we have to setup the server. The server listen for methods calls, process the calls and send the responses back to the client. Take in mind that the server only process the calls coming from the `target` specified in the initial config object.
 ```js
-import { BrowserRPC } from '@fleekhq/browser-rpc';
+import { BrowserRPC } from '@psychedelic/browser-rpc';
 
 // Create a new rpc instance
 // name property is injected as part of the responses messages to identify who processed the response
@@ -142,7 +142,7 @@ This class is meant to be used on browser extensions content script. It allow pr
 
 
 ```js
-import { ProxyRPC } from '@fleekhq/browser-rpc';
+import { ProxyRPC } from '@psychedelic/browser-rpc';
 
 // Create a new ProxyRPC instance
 // name property is injected as part of the responses messages to identify who processed the response
@@ -173,7 +173,7 @@ This class implements Port communication between the content script and other re
 
 
 ```js
-import { BackgroundController } from '@fleekhq/browser-rpc';
+import { BackgroundController } from '@psychedelic/browser-rpc';
 
 const backgroundController = new BackgroundController({
   name: 'bg-script',
@@ -254,7 +254,7 @@ Add a new handler to the instance
 Similar to BrowserRPC, this one is used to send requests to the BackgroundController using Port communication
 
 ```js
-import { PortRPC } from '@fleekhq/browser-rpc';
+import { PortRPC } from '@psychedelic/browser-rpc';
 
 const client = new PortRPC({
   name: 'browser-port-rpc',
@@ -280,7 +280,7 @@ Here is a full implementation of BrowserRPC, ProxyRPC, PortRPC and BackgroundCon
 
 webpage
 ```js
-  import { BrowserRPC } from '@fleekhq/browser-rpc';
+  import { BrowserRPC } from '@psychedelic/browser-rpc';
 
   const client = new BrowserRPC(window, {
     name: 'browser-client',
@@ -308,7 +308,7 @@ webpage
 
 content script
 ```js
-  import { ProxyRPC } from '@fleekhq/browser-rpc';
+  import { ProxyRPC } from '@psychedelic/browser-rpc';
   const server = new ProxyRPC(window, {
     name: 'rpc-server',
     target: 'browser-client',
@@ -327,7 +327,7 @@ content script
 
 background script
 ```js
-  import { BackgroundController } from '@fleekhq/browser-rpc';
+  import { BackgroundController } from '@psychedelic/browser-rpc';
 
   const backgroundController = new BackgroundController({
     name: 'bg-script',
